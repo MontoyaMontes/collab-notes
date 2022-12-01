@@ -2,9 +2,12 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Button from "@material-ui/core/Button";
+import { useRouter } from "next/router";
+
 import {
   alpha,
   FormControl,
+  Grid,
   InputBase,
   InputLabel,
   withStyles,
@@ -46,6 +49,12 @@ const BootstrapInput = withStyles((theme) => ({
 }))(InputBase);
 
 export default function Home() {
+  const router = useRouter();
+
+  const handleLogin = () => {
+    router.push("/tableros/");
+  };
+
   return (
     <div className={styles.container}>
       <Head>
@@ -76,7 +85,7 @@ export default function Home() {
         </div>
 
         <div className={styles.btn_login}>
-          <Button variant="outlined" color="primary">
+          <Button variant="outlined" color="primary" onClick={handleLogin}>
             Iniciar sesión
           </Button>
         </div>
