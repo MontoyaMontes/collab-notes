@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 
 import { useRouter } from "next/router";
 import Head from "next/head";
@@ -81,19 +81,31 @@ export default function Tablero() {
     console.log("SHare");
   };
 
-  let x = 0,
-    y = 0;
-  let isMouseDown = false;
+  const handleEdit = () => {
+    setDrawMode(!drawMode);
+  };
+
+  const [x, setX] = useState(0);
+  const [y, setY] = useState(0);
+
+  const [isMouseDown, setIsMouseDown] = useState(false);
+  const [drawMode, setDrawMode] = useState(false);
 
   const stopDrawing = () => {
     console.log("StopDRAW");
-    isMouseDown = false;
+    setIsMouseDown(false);
   };
+
   const startDrawing = (event) => {
     console.log("StartDraw");
-    isMouseDown = true;
-    [x, y] = [event.nativeEvent.offsetX, event.nativeEvent.offsetY];
+    if (drawMode) {
+      setIsMouseDown(true);
+      setX(event.nativeEvent.offsetX);
+      setY(event.nativeEvent.offsetY);
+      // [x, y] = [event.nativeEvent.offsetX, event.nativeEvent.offsetY];
+    }
   };
+
   const drawLine = (event) => {
     if (isMouseDown) {
       const canvas = document.querySelector("#canvasBase");
@@ -107,8 +119,10 @@ export default function Tablero() {
       context.moveTo(x, y);
       context.lineTo(newX, newY);
       context.stroke();
-      x = newX;
-      y = newY;
+      setX(newX);
+      setY(newY);
+      // x = newX;
+      // y = newY;
     }
   };
 
@@ -296,39 +310,45 @@ export default function Tablero() {
                 style={{ borderRadius: 25, backgroundColor: "#FFE184" }}
                 onClick={handleShare}
               >
-                {/* <IconButton color="primary" aria-label="share" component="span"> */}
                 <PanToolIcon fontSize="large" style={{ color: "#774F38" }} />
-                {/* </IconButton> */}
               </Button>
               <Button
                 variant="contained"
                 size="small"
-                style={{ borderRadius: 25, backgroundColor: "#C5E0DC" }}
+                // style= {drawMode ?
+                // {{ borderRadius: 25, backgroundColor:  "#C5E0DC" }}  : {{ borderRadius: 25, backgroundColor:"#FFE184" }}}
+
                 onClick={handleShare}
               >
-                {/* <IconButton color="primary" aria-label="share" component="span"> */}
                 <MouseIcon fontSize="large" style={{ color: "#774F38" }} />
-                {/* </IconButton> */}
               </Button>
+
               <Button
                 variant="contained"
                 size="small"
-                style={{ borderRadius: 25, backgroundColor: "#FFE184" }}
+                style={{ borderRadius: 25, backgroundColor: "fff" }}
                 onClick={handleShare}
               >
-                {/* <IconButton color="primary" aria-label="share" component="span"> */}
-                <BackSpaceIcon fontSize="large" style={{ color: "#774F38" }} />
-                {/* </IconButton> */}
+                <BackSpaceIcon
+                  fontSize={false ? "large" : "small"}
+                  style={{ color: "#774F38" }}
+                />
               </Button>
+
               <Button
-                variant="contained"
+                variant={drawMode ? "contained" : "outlined"}
                 size="small"
-                style={{ borderRadius: 25, backgroundColor: "#FFE184" }}
-                onClick={handleShare}
+                style={
+                  drawMode
+                    ? { borderRadius: 25, backgroundColor: "#FFE184" }
+                    : { borderRadius: 25, backgroundColor: "#774F38" }
+                }
+                onClick={handleEdit}
               >
-                {/* <IconButton color="primary" aria-label="share" component="span"> */}
-                <CreateIcon fontSize="large" style={{ color: "#774F38" }} />
-                {/* </IconButton> */}
+                <CreateIcon
+                  fontSize={drawMode ? "large" : "small"}
+                  style={drawMode ? { color: "#774F38" } : { color: "#FFE184" }}
+                />
               </Button>
             </Grid>
           </Grid>
