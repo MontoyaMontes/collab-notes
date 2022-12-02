@@ -20,8 +20,6 @@ export default function Tablero() {
 
   return (
     <DashboardStyle>
-      {/* Aqui se hace un map de los tablero dentro de un grid de material ui responsivo */}
-      <Button variant="outlined">Click para ir a tablero 123</Button>
       <div style={{ display: "flex" }}>
         {boards.map((currentBoard, index) => (
           <div key={index} onClick={() => handleClickBoard(currentBoard)}>
@@ -39,7 +37,7 @@ const DashboardStyle = styled.div`
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3),
       0 0 300px 25px rgba(222, 198, 122, 0.7) inset;
     width: 250px;
-    height: 350px;
+    height: 250px;
     margin: 2em;
     /* margin: 1.5% 50% auto; */
     /* left: -225px; */
