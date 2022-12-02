@@ -24,8 +24,8 @@ import RedoIcon from "@material-ui/icons/RedoRounded";
 import UndoIcon from "@material-ui/icons/UndoRounded";
 import PanToolIcon from "@material-ui/icons/PanToolRounded";
 import MouseIcon from "@material-ui/icons/Mouse";
-import DeleteIcon from "@material-ui/icons/Delete";
-import CreateIcon from "@material-ui/icons/Create"
+import BackSpaceIcon from "@material-ui/icons/Backspace";
+import CreateIcon from "@material-ui/icons/Create";
 
 import {
   alpha,
@@ -40,7 +40,7 @@ import { Description } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    flexGrow: 1,
+    flex: "1 1 auto"
   },
   paper: {
     height: 140,
@@ -87,6 +87,9 @@ const BootstrapInput = withStyles((theme) => ({
 }))(InputBase);
 
 export default function Tablero() {
+  const height = 768;
+  const width = 1366;
+
   const [spacing, setSpacing] = React.useState(2);
   const router = useRouter();
   const classes = useStyles();
@@ -142,7 +145,7 @@ export default function Tablero() {
             <Typography variant="h4">Tablero { idTablero }</Typography>
           </Box>
           <Box edge="end" style={{ marginLeft: "auto", paddingRight: "5%" }}>
-            <Image width={300} height={80} alt="logoThinkDesign" src={"/img/ThinkDesign pequeño.png"}></Image>
+            <Image width={width*0.2} height={height*0.1} alt="logoThinkDesign" src={"/img/ThinkDesign pequeño.png"}></Image>
           </Box>
         </Toolbar>
       </AppBar>
@@ -186,8 +189,11 @@ export default function Tablero() {
             </Button>
           </Grid>
         </Grid>
-        <Grid container style={{marginTop: "2%", backgroundColor: "#FFF"}} justifyContent="center" item xs={10}>
+        
+        <Grid className={classes.root} container style={{marginTop: "2%", maxHeight:"100%", backgroundColor: "#FFF"}} justifyContent="center" item xs={10}>
+          <canvas class="js-paint  paint-canvas" width={width*0.3} height={height*0.50}></canvas>
         </Grid>
+
         <Grid container style={{marginTop: "2%", backgroundColor: "#FFF", borderRadius: 20 }} item xs={7} justifyContent="center">
           <Grid container style={{margin: "1%"}} justifyContent="space-around" item xs={12}>
             <Button variant="contained" size="small" style={{borderRadius: 25, backgroundColor:"#FFE184"}} onClick={handleShare}>
@@ -212,12 +218,12 @@ export default function Tablero() {
             </Button>
             <Button variant="contained" size="small" style={{borderRadius: 25, backgroundColor:"#FFE184"}} onClick={handleShare}>
               <IconButton color="primary" aria-label="share" component="span">
-                <DeleteIcon fontSize="large" style={{color: "#774F38"}} />
+                <BackSpaceIcon fontSize="large" style={{color: "#774F38"}} />
               </IconButton>
             </Button>
             <Button variant="contained" size="small" style={{borderRadius: 25, backgroundColor:"#FFE184"}} onClick={handleShare}>
               <IconButton color="primary" aria-label="share" component="span">
-                <CreateIcon fontSize="large" style={{color: "#774F38"}} />
+                <CreateIcon fontSize="large" style={{color: "#774F38"}}/>
               </IconButton>
             </Button>
           </Grid>
@@ -235,4 +241,13 @@ export default function Tablero() {
     <Script src="/js/tablero.js" strategy="lazyOnload "/>
     </>
     );
+}
+
+
+function getWindowDimensions() {
+  const { innerWidth: width, innerHeight: height } = window;
+  return {
+    width,
+    height
+  };
 }
