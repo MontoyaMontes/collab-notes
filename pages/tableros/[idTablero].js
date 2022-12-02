@@ -119,6 +119,34 @@ export default function Tablero() {
     console.log('SHare');
   };
 
+
+  let x = 0, y = 0;
+  let isMouseDown = false;
+  
+  const stopDrawing = () => { console.log('StopDRAW'); isMouseDown = false; }
+  const startDrawing = event => {
+    console.log('StartDraw');
+    isMouseDown = true;   
+    [x, y] = [event.nativeEvent.offsetX, event.nativeEvent.offsetY];
+  }
+  const drawLine = event => {
+    if ( isMouseDown ) {
+      const canvas = document.querySelector("#canvasBase");
+      const context = canvas.getContext("2d");
+      context.lineWidth = 1;
+      const newX = event.nativeEvent.offsetX;
+      const newY = event.nativeEvent.offsetY;
+      context.beginPath();
+      console.log("x : " + x + " y: " + y + " nx: " + newX + " ny: " + newY );
+      console.log(event);
+      context.moveTo(x,y);
+      context.lineTo(newX,newY);
+      context.stroke();
+      x = newX;
+      y = newY;
+    }
+}
+
   return (
     <>
   <div className={styles.container} style={{backgroundColor: "#E08E79", padding: 0}}>
@@ -190,8 +218,12 @@ export default function Tablero() {
           </Grid>
         </Grid>
         
-        <Grid className={classes.root} container style={{marginTop: "2%", maxHeight:"100%", backgroundColor: "#FFF"}} justifyContent="center" item xs={10}>
-          <canvas class="js-paint  paint-canvas" width={width*0.3} height={height*0.50}></canvas>
+        <Grid container style={{marginTop: "2%", maxHeight:"100%", backgroundColor: "#FFF"}} justifyContent="center" item xs={10}>
+          <canvas id="canvasBase" style={{width: width*0.5, height: height*0.5}}
+            onMouseDown={startDrawing} 
+            onMouseUp={stopDrawing} 
+            onMouseOut={stopDrawing}
+            onMouseMove={drawLine}></canvas>
         </Grid>
 
         <Grid container style={{marginTop: "2%", backgroundColor: "#FFF", borderRadius: 20 }} item xs={7} justifyContent="center">
@@ -240,14 +272,5 @@ export default function Tablero() {
     </div>
     <Script src="/js/tablero.js" strategy="lazyOnload "/>
     </>
-    );
-}
-
-
-function getWindowDimensions() {
-  const { innerWidth: width, innerHeight: height } = window;
-  return {
-    width,
-    height
-  };
+    );  
 }
