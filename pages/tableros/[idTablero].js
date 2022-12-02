@@ -27,34 +27,13 @@ import MouseIcon from "@material-ui/icons/Mouse";
 import BackSpaceIcon from "@material-ui/icons/Backspace";
 import CreateIcon from "@material-ui/icons/Create";
 
-import {
-  alpha,
-  Grid,
-  InputBase,
-  Typography,
-  withStyles,
-} from "@material-ui/core";
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    flex: "1 1 auto",
-  },
-  paper: {
-    height: 140,
-    width: 100,
-  },
-  control: {
-    padding: theme.spacing(2),
-  },
-}));
+import { Grid, Typography } from "@material-ui/core";
 
 export default function Tablero() {
-  const height = 560;
-  const width = 1366;
+  const height = 600;
+  const width = 800;
 
-  const [spacing, setSpacing] = React.useState(2);
   const router = useRouter();
-  const classes = useStyles();
   const { idTablero } = router.query;
 
   const handleReturn = () => {
@@ -67,6 +46,16 @@ export default function Tablero() {
 
   const handleZoomOut = () => {
     console.log("ZommOut");
+  };
+
+  const saveImage = () => {
+    const canvas = document.querySelector("#canvasBase");
+
+    var image = canvas
+      .toDataURL("image/png.png")
+      .replace("image/png", "image/octet-stream"); // here is the most important part because if you dont replace you will get a DOM 18 exception.
+
+    window.location.href = image; // it will save locally
   };
 
   const handleLeft = () => {
@@ -130,7 +119,7 @@ export default function Tablero() {
     <>
       <div
         className={styles.container}
-        style={{ backgroundColor: "#E08E79", padding: 0 }}
+        style={{ backgroundColor: "#C5E0DC", padding: 0 }}
       >
         <Head>
           <title>Edición - Tablero {idTablero}</title>
@@ -162,12 +151,12 @@ export default function Tablero() {
               <Typography variant="h4">Tablero {idTablero}</Typography>
             </Box>
             <Box edge="end" style={{ marginLeft: "auto", paddingRight: "5%" }}>
-              <Image
+              {/* <Image
                 width={width * 0.2}
                 height={height * 0.07}
                 alt="logoThinkDesign"
                 src={"/img/ThinkDesign pequeño.png"}
-              />
+              /> */}
             </Box>
           </Toolbar>
         </AppBar>
@@ -233,7 +222,7 @@ export default function Tablero() {
 
             {/* </Grid> */}
             {/* <Grid item xs={12} md={4} justifyContent="flex-end"> */}
-            <Button onClick={handleShare}>
+            <Button onClick={saveImage}>
               {/* <IconButton color="primary" aria-label="share" component="span"> */}
               <ShareIcon fontSize="large" style={{ color: "#774F38" }} />
               {/* </IconButton> */}
@@ -245,13 +234,13 @@ export default function Tablero() {
             style={{
               display: "flex",
               marginTop: "2%",
-              // maxHeight: "100%",
+              maxHeight: "100%",
               // backgroundColor: "#FFF",
-              // width: "100hw",
-              // height: "100hw",
+              // width: "200px",
+              // height: "100px",
               justifyContent: "center",
             }}
-            justifyContent="center"
+            // justifyContent="center"
             item
             xs={12}
           >
@@ -339,15 +328,17 @@ export default function Tablero() {
                 variant={drawMode ? "contained" : "outlined"}
                 size="small"
                 style={
-                  drawMode
+                  !drawMode
                     ? { borderRadius: 25, backgroundColor: "#FFE184" }
                     : { borderRadius: 25, backgroundColor: "#774F38" }
                 }
                 onClick={handleEdit}
               >
                 <CreateIcon
-                  fontSize={drawMode ? "large" : "small"}
-                  style={drawMode ? { color: "#774F38" } : { color: "#FFE184" }}
+                  fontSize={!drawMode ? "large" : "small"}
+                  style={
+                    !drawMode ? { color: "#774F38" } : { color: "#FFE184" }
+                  }
                 />
               </Button>
             </Grid>
