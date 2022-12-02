@@ -22,15 +22,13 @@ export default function Tablero() {
     <DashboardStyle>
       {/* Aqui se hace un map de los tablero dentro de un grid de material ui responsivo */}
       <Button variant="outlined">Click para ir a tablero 123</Button>
-      {boards.map((currentBoard, index) => (
-        <div
-          key={index}
-          class="letter"
-          onClick={() => handleClickBoard(currentBoard)}
-        >
-          Nombre del tablero:{currentBoard}
-        </div>
-      ))}
+      <div style={{ display: "flex" }}>
+        {boards.map((currentBoard, index) => (
+          <div key={index} onClick={() => handleClickBoard(currentBoard)}>
+            <div class="letter">Nombre del tablero:{currentBoard}</div>
+          </div>
+        ))}
+      </div>
     </DashboardStyle>
   );
 }
@@ -42,10 +40,12 @@ const DashboardStyle = styled.div`
       0 0 300px 25px rgba(222, 198, 122, 0.7) inset;
     width: 250px;
     height: 350px;
-    margin: 1.5% 50% auto;
-    left: -225px;
+    margin: 2em;
+    /* margin: 1.5% 50% auto; */
+    /* left: -225px; */
     padding: 24px;
     position: relative;
+    cursor: pointer;
   }
 
   .letter:before,
