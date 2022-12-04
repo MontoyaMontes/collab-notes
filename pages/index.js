@@ -7,11 +7,11 @@ import { useRouter } from "next/router";
 import {
   alpha,
   FormControl,
-  Grid,
   InputBase,
   InputLabel,
   withStyles,
 } from "@material-ui/core";
+import { useState } from "react";
 
 const BootstrapInput = withStyles((theme) => ({
   root: {
@@ -51,8 +51,16 @@ const BootstrapInput = withStyles((theme) => ({
 export default function Home() {
   const router = useRouter();
 
+  const [user, setUser] = useState("")
+  const [password, setPassword] = useState("")
+  const [incorrectUser, setIncorrectUser] = useState(false)
+
   const handleLogin = () => {
-    router.push("/tableros/");
+    if(user === "prueba" && password === "prueba"){
+          router.push("/tableros/");
+    }else{
+      setIncorrectUser(true)
+    }
   };
 
   return (
@@ -69,18 +77,19 @@ export default function Home() {
         <h1 className={styles.title}>inicia sesión</h1>
 
         <div className={styles.data}>
-          <FormControl>
+          {incorrectUser && <label style={{color:"red"}}>Usuario o contraseña incorrectas</label>}
+          <FormControl style={{marginBottom: "2em"}}>
             <InputLabel shrink htmlFor="bootstrap-input">
-              Uusuario o email
+              Usuario o email
             </InputLabel>
-            <BootstrapInput id="bootstrap-input" placeholder="Contraseña" />
+            <BootstrapInput value={user} onChange={e => setUser(e.target.value)} id="bootstrap-input" placeholder="Contraseña" />
           </FormControl>
 
           <FormControl>
             <InputLabel shrink htmlFor="bootstrap-input">
               Contraseña
             </InputLabel>
-            <BootstrapInput id="bootstrap-input" placeholder="Contraseña" />
+            <BootstrapInput type="password" value={password} onChange={e => setPassword(e.target.value)} id="bootstrap-input" placeholder="Contraseña" />
           </FormControl>
         </div>
 
@@ -89,6 +98,7 @@ export default function Home() {
             Iniciar sesión
           </Button>
         </div>
+        
       </main>
 
       <footer className={styles.footer}>

@@ -1,16 +1,73 @@
-import { Button } from "@material-ui/core";
+import {
+  Button,
+  FormControl,
+  Icon,
+  alpha,
+  InputBase,
+  InputLabel,
+  withStyles,
+  IconButton,
+} from "@material-ui/core";
+import { Add } from "@material-ui/icons";
 import { Router } from "next/router";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import styles from "../../styles/Home.module.css";
+
+const BootstrapInput = withStyles((theme) => ({
+  root: {
+    "label + &": {
+      marginTop: theme.spacing(3),
+    },
+  },
+  input: {
+    borderRadius: 4,
+    position: "relative",
+    backgroundColor: theme.palette.common.white,
+    border: "1px solid #ced4da",
+    fontSize: 16,
+    width: "auto",
+    padding: "10px 12px",
+    transition: theme.transitions.create(["border-color", "box-shadow"]),
+    // Use the system font instead of the default Roboto font.
+    fontFamily: [
+      "-apple-system",
+      "BlinkMacSystemFont",
+      '"Segoe UI"',
+      "Roboto",
+      '"Helvetica Neue"',
+      "Arial",
+      "sans-serif",
+      '"Apple Color Emoji"',
+      '"Segoe UI Emoji"',
+      '"Segoe UI Symbol"',
+    ].join(","),
+    "&:focus": {
+      boxShadow: `${alpha(theme.palette.primary.main, 0.25)} 0 0 0 0.2rem`,
+      borderColor: theme.palette.primary.main,
+    },
+  },
+}))(InputBase);
 
 export default function Tablero() {
   const router = useRouter();
   const [boards, setBoards] = useState([]);
+  const [newBoardName, setNewBoardName] = useState([]);
+  const [openAdd, setOpenAdd] = useState(false);
 
   useEffect(() => {
     setBoards(["1", "dos", "otro"]);
   }, []);
+
+  const handleOpenNew = () => {
+    setOpenAdd(!openAdd)
+  }
+
+  const handleAddBoard = () => {
+    setBoards((boards) => [...boards, newBoardName]);
+    setNewBoardName("");
+  };
 
   const handleClickBoard = (board) => {
     router.push({
@@ -20,13 +77,57 @@ export default function Tablero() {
 
   return (
     <DashboardStyle>
+     
       <div style={{ display: "flex" }}>
         {boards.map((currentBoard, index) => (
           <div key={index} onClick={() => handleClickBoard(currentBoard)}>
-            <div class="letter">Nombre del tablero:{currentBoard}</div>
+            <div class="letter">
+              <div>
+                Nombre del tablero: <b>{currentBoard}</b>
+              </div>
+            </div>
           </div>
         ))}
       </div>
+
+ <IconButton 
+ variant="contained" 
+ color="primary" 
+ onClick={handleOpenNew}>
+        <Add />
+      </IconButton>
+
+      {openAdd && (
+            <div>
+            <InputLabel shrink htmlFor="bootstrap-input">
+Nombre del nuevo tablero
+            </InputLabel>
+
+          <FormControl style={{ marginBottom: "2em" }}>
+                          <BootstrapInput
+              value={newBoardName}
+              onChange={(e) => setNewBoardName(e.target.value)}
+              id="bootstrap-input"
+              placeholder="Nuevo tablero"
+            />
+          </FormControl>
+
+          <Button variant="outlined" 
+          style={{alignItems:"center"}} 
+          onClick={handleAddBoard}>
+            Agregar
+          </Button>
+            </div>
+            
+      )}
+
+      <footer className="footer">
+        <h3>
+          CollabNotes
+          <i> by </i>
+          ThinkDesign
+        </h3>
+      </footer>
     </DashboardStyle>
   );
 }
@@ -86,4 +187,37 @@ const DashboardStyle = styled.div`
     right: 3px;
     top: -3px;
   }
+
+  .footer {
+  display: flex;
+  flex: 1;
+  padding: 2rem 0;
+  border-top: 1px solid #eaeaea;
+  /* justify-content: center; */
+  align-items: center;
+  position: fixed;
+  bottom: 0;
+}
+
+.footer h3 {
+  margin: 0;
+  /* line-height: 1.15; */
+  /* font-size: 1.5rem; */
+}
+
+.footer a {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 1;
+}
+
+.footer i {
+  color: red;
+  /*Cambiar por color de app**/
+  line-height: .15;
+  font-size: 1rem;
+}
+
 `;
+
