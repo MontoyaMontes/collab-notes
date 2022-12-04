@@ -30,11 +30,29 @@ import CreateIcon from "@material-ui/icons/Create";
 import { Grid, Typography } from "@material-ui/core";
 
 export default function Tablero() {
+  const color1 = "#774F38"
+  const color2 = "#FFE184"
+  const [x, setX] = useState(0);
+  const [y, setY] = useState(0);
+
+  const [isMouseDown, setIsMouseDown] = useState(false);
+  const [mode, setMode] = useState("");
+
   const height = 600;
   const width = 800;
 
   const router = useRouter();
   const { idTablero } = router.query;
+
+  const saveImage = () => {
+    const canvas = document.querySelector("#canvasBase");
+
+    var image = canvas
+      .toDataURL("image/png.png")
+      .replace("image/png", "image/octet-stream"); // here is the most important part because if you dont replace you will get a DOM 18 exception.
+
+    window.location.href = image; // it will save locally
+  };
 
   const handleReturn = () => {
     router.push("/tableros/");
@@ -48,16 +66,6 @@ export default function Tablero() {
     console.log("ZommOut");
   };
 
-  const saveImage = () => {
-    const canvas = document.querySelector("#canvasBase");
-
-    var image = canvas
-      .toDataURL("image/png.png")
-      .replace("image/png", "image/octet-stream"); // here is the most important part because if you dont replace you will get a DOM 18 exception.
-
-    window.location.href = image; // it will save locally
-  };
-
   const handleLeft = () => {
     console.log("Left");
   };
@@ -67,18 +75,13 @@ export default function Tablero() {
   };
 
   const handleShare = () => {
-    console.log("SHare");
+    console.log("Share");
+    setMode("share")
   };
 
   const handleEdit = () => {
-    setDrawMode(!drawMode);
+    setMode("draw");
   };
-
-  const [x, setX] = useState(0);
-  const [y, setY] = useState(0);
-
-  const [isMouseDown, setIsMouseDown] = useState(false);
-  const [drawMode, setDrawMode] = useState(false);
 
   const stopDrawing = () => {
     console.log("StopDRAW");
@@ -87,7 +90,7 @@ export default function Tablero() {
 
   const startDrawing = (event) => {
     console.log("StartDraw");
-    if (drawMode) {
+    if (mode === "draw") {
       setIsMouseDown(true);
       setX(event.nativeEvent.offsetX);
       setY(event.nativeEvent.offsetY);
@@ -110,13 +113,10 @@ export default function Tablero() {
       context.stroke();
       setX(newX);
       setY(newY);
-      // x = newX;
-      // y = newY;
     }
   };
 
   return (
-    <>
       <div
         className={styles.container}
         style={{ backgroundColor: "#C5E0DC", padding: 0 }}
@@ -144,7 +144,7 @@ export default function Tablero() {
               onClick={handleReturn}
             >
               <IconButton color="primary" aria-label="return" component="span">
-                <ArrowBackIcon fontSize="large" style={{ color: "#774F38" }} />
+                <ArrowBackIcon fontSize="large" style={{ color: {color1} }} />
               </IconButton>
             </Button>
             <Box style={{ paddingLeft: "5%" }}>
@@ -170,64 +170,37 @@ export default function Tablero() {
               borderRadius: 20,
             }}
             justifyContent="space-around"
-            // justifyContent="center"
             item
             xs={7}
           >
-            {/* <Grid container item xs={12} md={4} justifyContent="flex-start"> */}
             <div>
               <Button onClick={handleZoomIn}>
-                {/* <IconButton
-                  color="primary"
-                  aria-label="zoomIn"
-                  component="span"
-                > */}
-                <ZoomInIcon fontSize="large" style={{ color: "#774F38" }} />
-                {/* </IconButton> */}
+                <ZoomInIcon fontSize="large" style={{ color: {color1} }} />
               </Button>
               <Button onClick={handleZoomOut}>
-                {/* <IconButton */}
-                {/* color="primary"
-                  aria-label="zoomOut"
-                  component="span"
-                > */}
-                <ZoomOutIcon fontSize="large" style={{ color: "#774F38" }} />
-                {/* </IconButton> */}
+                <ZoomOutIcon fontSize="large" style={{ color: {color1} }} />
               </Button>
             </div>
             <div>
               <Button onClick={handleLeft}>
-                {/* <IconButton color="primary" aria-label="left" component="span"> */}
-                <ArrowLeftIcon fontSize="large" style={{ color: "#774F38" }} />
-                {/* </IconButton> */}
+                <ArrowLeftIcon fontSize="large" style={{ color: {color1} }} />
               </Button>
               <Button>
-                {/* <IconButton color="primary" aria-label="left" component="span"> */}
                 <DescriptionIcon
                   fontSize="large"
                   style={{
-                    color: "#774F38",
+                    color: {color1},
                   }}
                 />
-                {/* </IconButton> */}
               </Button>
               <Button onClick={handleRight}>
-                {/* <IconButton color="primary" aria-label="right" component="span"> */}
-                <ArrowRightIcon fontSize="large" style={{ color: "#774F38" }} />
-                {/* </IconButton> */}
+                <ArrowRightIcon fontSize="large" style={{ color: {color1} }} />
               </Button>
             </div>
-            {/* </Grid> */}
-            {/* <Grid item xs={12} md={4} justifyContent="center"> */}
-
-            {/* </Grid> */}
-            {/* <Grid item xs={12} md={4} justifyContent="flex-end"> */}
+            
             <Button onClick={saveImage}>
-              {/* <IconButton color="primary" aria-label="share" component="span"> */}
-              <ShareIcon fontSize="large" style={{ color: "#774F38" }} />
-              {/* </IconButton> */}
+              <ShareIcon fontSize="large" style={{ color: {color1} }} />
             </Button>
-            {/* </Grid> */}
           </Grid>
 
           <Grid
@@ -235,12 +208,8 @@ export default function Tablero() {
               display: "flex",
               marginTop: "2%",
               maxHeight: "100%",
-              // backgroundColor: "#FFF",
-              // width: "200px",
-              // height: "100px",
               justifyContent: "center",
             }}
-            // justifyContent="center"
             item
             xs={12}
           >
@@ -274,70 +243,82 @@ export default function Tablero() {
               xs={12}
             >
               <Button
-                variant="contained"
+                variant={mode == "undo" ? "contained" : "outlined"}
                 size="small"
-                style={{ borderRadius: 25, backgroundColor: "#FFE184" }}
-                onClick={handleShare}
+                style={
+                  mode == "draw" 
+                    ?  { borderRadius: 25, backgroundColor: {color1} }
+                    : { borderRadius: 25, backgroundColor: {color2} }
+                }
+                onClick={() => setMode("undo")}
               >
-                {/* <IconButton color="primary" aria-label="share" component="span"> */}
-                <UndoIcon fontSize="large" style={{ color: "#774F38" }} />
-                {/* </IconButton> */}
+                <UndoIcon fontSize="large" style={{ color: {color1} }} />
               </Button>
-              <Button
-                variant="contained"
-                size="small"
-                style={{ borderRadius: 25, backgroundColor: "#FFE184" }}
-                onClick={handleShare}
-              >
-                {/* <IconButton color="primary" aria-label="share" component="span"> */}
-                <RedoIcon fontSize="large" style={{ color: "#774F38" }} />
-                {/* </IconButton> */}
-              </Button>
-              <Button
-                variant="contained"
-                size="small"
-                style={{ borderRadius: 25, backgroundColor: "#FFE184" }}
-                onClick={handleShare}
-              >
-                <PanToolIcon fontSize="large" style={{ color: "#774F38" }} />
-              </Button>
-              <Button
-                variant="contained"
-                size="small"
-                // style= {drawMode ?
-                // {{ borderRadius: 25, backgroundColor:  "#C5E0DC" }}  : {{ borderRadius: 25, backgroundColor:"#FFE184" }}}
 
-                onClick={handleShare}
+              <Button
+               variant={mode == "redo" ? "contained" : "outlined"}
+               size="small"
+               style={
+                 mode == "draw" 
+                   ?  { borderRadius: 25, backgroundColor: {color1} }
+                   : { borderRadius: 25, backgroundColor: {color2} }
+               }
+                onClick={() => setMode("redo")}
               >
-                <MouseIcon fontSize="large" style={{ color: "#774F38" }} />
+                <RedoIcon fontSize="large" style={{ color: {color1} }} />
               </Button>
 
               <Button
                 variant="contained"
                 size="small"
-                style={{ borderRadius: 25, backgroundColor: "fff" }}
-                onClick={handleShare}
+                style={{ borderRadius: 25, backgroundColor: {color2} }}
+                onClick={() => setMode("pan")}
+              >
+                <PanToolIcon fontSize="large" style={{ color: {color1} }} />
+              </Button>
+              <Button
+                 variant={mode == "mouse" ? "contained" : "outlined"}
+                 size="small"
+                 style={
+                   mode == "draw" 
+                     ?  { borderRadius: 25, backgroundColor: {color1} }
+                     : { borderRadius: 25, backgroundColor: {color2} }
+                 }
+                onClick={() => setMode("mouse")}
+              >
+                <MouseIcon fontSize="large" style={{ color: {color1} }} />
+              </Button>
+
+              <Button
+            variant={mode == "backspace" ? "contained" : "outlined"}
+            size="small"
+            style={
+              mode == "draw" 
+                ?  { borderRadius: 25, backgroundColor: {color1} }
+                : { borderRadius: 25, backgroundColor: {color2} }
+            }
+                onClick={() => setMode("backspace")}
               >
                 <BackSpaceIcon
                   fontSize={false ? "large" : "small"}
-                  style={{ color: "#774F38" }}
+                  style={{ color: {color1} }}
                 />
               </Button>
 
               <Button
-                variant={drawMode ? "contained" : "outlined"}
+                variant={mode == "draw" ? "contained" : "outlined"}
                 size="small"
                 style={
-                  !drawMode
-                    ? { borderRadius: 25, backgroundColor: "#FFE184" }
-                    : { borderRadius: 25, backgroundColor: "#774F38" }
+                  mode == "draw" 
+                    ?  { borderRadius: 25, backgroundColor: {color1} }
+                    : { borderRadius: 25, backgroundColor: {color2} }
                 }
                 onClick={handleEdit}
               >
                 <CreateIcon
-                  fontSize={!drawMode ? "large" : "small"}
+                  fontSize={mode == "draw"  ? "small" : "large"}
                   style={
-                    !drawMode ? { color: "#774F38" } : { color: "#FFE184" }
+                    mode == "draw"  ? { color: {color2} } :{ color: {color1} } 
                   }
                 />
               </Button>
@@ -354,6 +335,5 @@ export default function Tablero() {
         </footer>
       </div>
       <Script src="/js/tablero.js" strategy="lazyOnload " />
-    </>
   );
 }

@@ -77,7 +77,7 @@ export default function Tablero() {
 
   return (
     <DashboardStyle>
-     
+
       <div style={{ display: "flex" }}>
         {boards.map((currentBoard, index) => (
           <div key={index} onClick={() => handleClickBoard(currentBoard)}>
@@ -90,21 +90,23 @@ export default function Tablero() {
         ))}
       </div>
 
- <IconButton 
- variant="contained" 
- color="primary" 
- onClick={handleOpenNew}>
-        <Add />
-      </IconButton>
+      <div className="add_button">
+        <IconButton
+          variant="contained"
+          color="primary"
+          onClick={handleOpenNew}>
+          <Add />
+        </IconButton>
+      </div>
 
       {openAdd && (
-            <div>
-            <InputLabel shrink htmlFor="bootstrap-input">
-Nombre del nuevo tablero
-            </InputLabel>
+        <div>
+          <InputLabel shrink htmlFor="bootstrap-input">
+            Nombre del nuevo tablero
+          </InputLabel>
 
           <FormControl style={{ marginBottom: "2em" }}>
-                          <BootstrapInput
+            <BootstrapInput
               value={newBoardName}
               onChange={(e) => setNewBoardName(e.target.value)}
               id="bootstrap-input"
@@ -112,13 +114,12 @@ Nombre del nuevo tablero
             />
           </FormControl>
 
-          <Button variant="outlined" 
-          style={{alignItems:"center"}} 
-          onClick={handleAddBoard}>
+          <Button variant="outlined"
+            style={{ alignItems: "center" }}
+            onClick={handleAddBoard}>
             Agregar
           </Button>
-            </div>
-            
+        </div>
       )}
 
       <footer className="footer">
@@ -197,6 +198,19 @@ const DashboardStyle = styled.div`
   align-items: center;
   position: fixed;
   bottom: 0;
+}
+
+.add_button{
+  position: fixed;
+  width: 60px;
+  height: 60px;
+  bottom: 40px;
+  right: 40px;
+  background-color: #ece5ce;
+  color: #fff;
+  border-radius: 50px;
+  text-align: center;
+  box-shadow: 2px 2px 3px #999;
 }
 
 .footer h3 {
