@@ -121,7 +121,7 @@ export default function Tablero() {
         </Toolbar>
       </AppBar>
 
-      <Grid container>
+      <Grid container style={{ paddingLeft: "2em" }}>
         {boards.map((currentBoard, index) => (
           <Grid
             item
@@ -132,7 +132,7 @@ export default function Tablero() {
             key={index}
             onClick={() => handleClickBoard(currentBoard)}
           >
-            <div class="letter">
+            <div className="letter">
               <div>
                 Nombre del tablero: <b>{currentBoard}</b>
               </div>
@@ -140,9 +140,6 @@ export default function Tablero() {
           </Grid>
         ))}
       </Grid>
-      {/* <div style={{ display: "grid" }}> */}
-
-      {/* </div> */}
 
       <div className="add_button">
         <IconButton
@@ -199,8 +196,6 @@ const DashboardStyle = styled.div`
     width: 250px;
     height: 250px;
     margin: 2em;
-    /* margin: 1.5% 50% auto; */
-    /* left: -225px; */
     padding: 24px;
     position: relative;
     cursor: pointer;
@@ -252,7 +247,6 @@ const DashboardStyle = styled.div`
     flex: 1;
     padding: 2rem 0;
     border-top: 1px solid #eaeaea;
-    /* justify-content: center; */
     align-items: center;
     position: fixed;
     bottom: 0;
@@ -260,8 +254,6 @@ const DashboardStyle = styled.div`
 
   .options_container {
     position: fixed;
-    /* width: 60px;
-    height: 60px; */
     padding: 1em;
     bottom: 120px;
     right: 40px;

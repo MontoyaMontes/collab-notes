@@ -119,7 +119,7 @@ export default function Tablero() {
   return (
     <div
       className={styles.container}
-      style={{ backgroundColor: "#C5E0DC", padding: 0 }}
+      style={{ backgroundColor: "#C5E0DC", maxHeight: "90vh" }}
     >
       <Head>
         <title>Edición - Tablero {idTablero}</title>
@@ -143,12 +143,12 @@ export default function Tablero() {
             color="primary"
             onClick={handleReturn}
           >
-            {/* <IconButton color="primary" aria-label="return" component="span"> */}
             <ArrowBackIcon fontSize="large" style={{ color: { color1 } }} />
-            {/* </IconButton> */}
           </Button>
           <Box style={{ paddingLeft: "5%" }}>
-            <Typography variant="h4">Tablero {idTablero}</Typography>
+            <Typography variant="h4">
+              Tablero: <b>{idTablero}</b>
+            </Typography>
           </Box>
           <Box
             edge="end"
@@ -168,13 +168,14 @@ export default function Tablero() {
         </Toolbar>
       </AppBar>
 
-      <Grid justifyContent="center" container item xs={12}>
+      <Grid container justifyContent="center" item xs={12}>
         <Grid
           container
           style={{
             marginTop: "2%",
             backgroundColor: "#FFF",
             borderRadius: 20,
+            border: "1px solid #774F38",
           }}
           justifyContent="space-around"
           item
@@ -223,7 +224,8 @@ export default function Tablero() {
           <canvas
             id="canvasBase"
             width={width}
-            height={height}
+            height="550%"
+            // width: 100%;
             style={{ backgroundColor: "#FFF" }}
             onMouseDown={startDrawing}
             onMouseUp={stopDrawing}
@@ -233,10 +235,12 @@ export default function Tablero() {
         </Grid>
 
         <Grid
+          container
           style={{
             marginTop: "2%",
             backgroundColor: "#FFF",
             borderRadius: 20,
+            border: "1px solid #774F38",
           }}
           item
           xs={7}
@@ -276,7 +280,7 @@ export default function Tablero() {
             </Button>
 
             <Button
-              variant="contained"
+              variant={mode == "select" ? "contained" : "outlined"}
               size="small"
               style={{ borderRadius: 25, backgroundColor: { color2 } }}
               onClick={() => setMode("pan")}
@@ -333,7 +337,10 @@ export default function Tablero() {
         </Grid>
       </Grid>
 
-      <footer className={styles.footer}>
+      <footer
+        className={styles.footer}
+        style={{ position: "fixed", bottom: "0" }}
+      >
         <h3>
           CollabNotes
           <i> by </i>
