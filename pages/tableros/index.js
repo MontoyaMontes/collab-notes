@@ -27,6 +27,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import Typography from "@material-ui/core/Typography";
+import Head from "next/head";
 
 const BootstrapInput = withStyles((theme) => ({
   root: {
@@ -64,7 +65,22 @@ const BootstrapInput = withStyles((theme) => ({
 }))(InputBase);
 
 export default function Tablero() {
+
   const [open, setOpen] = React.useState(false);
+  const [jsonObjects , setData]= useState([]);
+
+  fetch("./files/tabs.json").then(
+    function(res){
+    return res.json()
+  }).then(function(data){
+  // store Data in State Data Variable
+    setData(data)
+    console.log("Cargando")
+  }).catch(
+    function(err){
+      console.log(err, ' error')
+    }
+  )
 
   const handleCloseDessagree = () => {
     setOpen(false);
@@ -95,8 +111,10 @@ export default function Tablero() {
   };
 
   const handleAddBoard = () => {
-    setBoards((boards) => [...boards, newBoardName]);
-    setNewBoardName("");
+    const newArray = [...jsonObjects, 
+      { "nombre": newBoardName, "fechaModificacion": new Date().toJSON().slice(0, 10), "canva": ""}];
+
+      setOpenAdd(false);
   };
 
   const handleClickBoard = (board) => {
@@ -105,8 +123,20 @@ export default function Tablero() {
     });
   };
 
+  const handleClickBoardCanva = (board, canva) => {
+    router.push({
+      pathname: `/tableros/${board}`,
+    });
+  };
+
   return (
     <DashboardStyle>
+      <Head>
+        <title>CollabNotes</title>
+        <meta name="description" content="CollabNotes" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
       <AppBar
         position="static"
         style={{
@@ -147,23 +177,34 @@ export default function Tablero() {
       </AppBar>
 
       <Grid container style={{ paddingLeft: "2em" }}>
-        {boards.map((currentBoard, index) => (
-          <Grid
-            item
-            xs={12}
-            sm={6}
-            md={4}
-            lg={3}
-            key={index}
-            onClick={() => handleClickBoard(currentBoard)}
-          >
-            <div className="letter">
-              <div>
-                Nombre del tablero: <b>{currentBoard}</b>
-              </div>
-            </div>
-          </Grid>
-        ))}
+        {
+          jsonObjects? jsonObjects.map(
+            function(data){
+                    return (
+                      <Grid
+                      item
+                      xs={12}
+                      sm={6}
+                      md={4}
+                      lg={3}
+                      onClick={() => handleClickBoardCanva(data.nombre,data.canva)}
+                    >
+                      <div className="letter">
+                        <div>
+                          <h3>{data.nombre}</h3>
+                        </div>
+                        <div>
+                          Fecha modificación:
+                        </div>
+                        <div>
+                          <b>{data.fechaModificacion}</b>
+                        </div>
+                      </div>
+                    </Grid>
+                    )
+            }
+          ):""
+        }
       </Grid>
 
       <div className="add_button">
