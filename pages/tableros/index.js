@@ -7,8 +7,13 @@ import {
   InputLabel,
   withStyles,
   IconButton,
+  AppBar,
+  Toolbar,
+  Box,
+  Grid,
 } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
+import Image from "next/image";
 import { Router } from "next/router";
 import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
@@ -61,8 +66,8 @@ export default function Tablero() {
   }, []);
 
   const handleOpenNew = () => {
-    setOpenAdd(!openAdd)
-  }
+    setOpenAdd(!openAdd);
+  };
 
   const handleAddBoard = () => {
     setBoards((boards) => [...boards, newBoardName]);
@@ -77,35 +82,86 @@ export default function Tablero() {
 
   return (
     <DashboardStyle>
+      <AppBar
+        position="static"
+        style={{
+          backgroundColor: "#FFF",
+          color: "black",
+          paddingLeft: "100px",
+          boxShadow: "0px 0px 0px 0px",
+        }}
+      >
+        <Toolbar>
+          <Button
+            edge="start"
+            variant="text"
+            color="primary"
+            // onClick={handleReturn}
+          >
+            {/* <IconButton color="primary" aria-label="return" component="span">
+              <ArrowBackIcon fontSize="large" style={{ color: { color1 } }} />
+            </IconButton> */}
+          </Button>
 
-      <div style={{ display: "flex" }}>
+          <Box
+            edge="end"
+            style={{
+              marginTop: "1em",
+              marginLeft: "auto",
+              paddingRight: "5%",
+            }}
+          >
+            <Image
+              width={260}
+              height={60}
+              alt="logoThinkDesign"
+              src={"/img/ThinkDesign pequeño.png"}
+            />
+          </Box>
+        </Toolbar>
+      </AppBar>
+
+      <Grid container>
         {boards.map((currentBoard, index) => (
-          <div key={index} onClick={() => handleClickBoard(currentBoard)}>
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            lg={3}
+            key={index}
+            onClick={() => handleClickBoard(currentBoard)}
+          >
             <div class="letter">
               <div>
                 Nombre del tablero: <b>{currentBoard}</b>
               </div>
             </div>
-          </div>
+          </Grid>
         ))}
-      </div>
+      </Grid>
+      {/* <div style={{ display: "grid" }}> */}
+
+      {/* </div> */}
 
       <div className="add_button">
         <IconButton
+          className="add_icon"
           variant="contained"
           color="primary"
-          onClick={handleOpenNew}>
+          onClick={handleOpenNew}
+        >
           <Add />
         </IconButton>
       </div>
 
       {openAdd && (
-        <div>
+        <div className="options_container">
           <InputLabel shrink htmlFor="bootstrap-input">
             Nombre del nuevo tablero
           </InputLabel>
 
-          <FormControl style={{ marginBottom: "2em" }}>
+          <FormControl style={{ marginBottom: "1em" }}>
             <BootstrapInput
               value={newBoardName}
               onChange={(e) => setNewBoardName(e.target.value)}
@@ -113,10 +169,12 @@ export default function Tablero() {
               placeholder="Nuevo tablero"
             />
           </FormControl>
-
-          <Button variant="outlined"
-            style={{ alignItems: "center" }}
-            onClick={handleAddBoard}>
+          <div></div>
+          <Button
+            variant="outlined"
+            style={{ alignItems: "center", backgroundColor: "#ece5ce" }}
+            onClick={handleAddBoard}
+          >
             Agregar
           </Button>
         </div>
@@ -190,48 +248,66 @@ const DashboardStyle = styled.div`
   }
 
   .footer {
-  display: flex;
-  flex: 1;
-  padding: 2rem 0;
-  border-top: 1px solid #eaeaea;
-  /* justify-content: center; */
-  align-items: center;
-  position: fixed;
-  bottom: 0;
-}
+    display: flex;
+    flex: 1;
+    padding: 2rem 0;
+    border-top: 1px solid #eaeaea;
+    /* justify-content: center; */
+    align-items: center;
+    position: fixed;
+    bottom: 0;
+  }
 
-.add_button{
-  position: fixed;
-  width: 60px;
-  height: 60px;
-  bottom: 40px;
-  right: 40px;
-  background-color: #ece5ce;
-  color: #fff;
-  border-radius: 50px;
-  text-align: center;
-  box-shadow: 2px 2px 3px #999;
-}
+  .options_container {
+    position: fixed;
+    /* width: 60px;
+    height: 60px; */
+    padding: 1em;
+    bottom: 120px;
+    right: 40px;
+    background-color: white;
+    border: 1px solid black;
+    border-radius: 10px;
+    box-shadow: 2px 2px 3px #999;
+  }
 
-.footer h3 {
-  margin: 0;
-  /* line-height: 1.15; */
-  /* font-size: 1.5rem; */
-}
+  .add_button {
+    position: fixed;
+    width: 50px;
+    height: 50px;
+    bottom: 40px;
+    right: 40px;
+    background-color: #ece5ce;
+    color: #fff;
+    border-radius: 50px;
+    text-align: center;
+    box-shadow: 2px 2px 3px #999;
+  }
 
-.footer a {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-grow: 1;
-}
+  .add_icon {
+    position: relative;
+    top: 5%;
+    /* left: 50%; */
+    /* transform: translate(-50%, -50%); */
+  }
 
-.footer i {
-  color: red;
-  /*Cambiar por color de app**/
-  line-height: .15;
-  font-size: 1rem;
-}
+  .footer h3 {
+    margin: 0;
+    /* line-height: 1.15; */
+    /* font-size: 1.5rem; */
+  }
 
+  .footer a {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+  }
+
+  .footer i {
+    color: red;
+    /*Cambiar por color de app**/
+    line-height: 0.15;
+    font-size: 1rem;
+  }
 `;
-

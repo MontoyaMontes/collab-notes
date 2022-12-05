@@ -30,8 +30,8 @@ import CreateIcon from "@material-ui/icons/Create";
 import { Grid, Typography } from "@material-ui/core";
 
 export default function Tablero() {
-  const color1 = "#774F38"
-  const color2 = "#FFE184"
+  const color1 = "#774F38";
+  const color2 = "#FFE184";
   const [x, setX] = useState(0);
   const [y, setY] = useState(0);
 
@@ -76,7 +76,7 @@ export default function Tablero() {
 
   const handleShare = () => {
     console.log("Share");
-    setMode("share")
+    setMode("share");
   };
 
   const handleEdit = () => {
@@ -117,223 +117,230 @@ export default function Tablero() {
   };
 
   return (
-      <div
-        className={styles.container}
-        style={{ backgroundColor: "#C5E0DC", padding: 0 }}
+    <div
+      className={styles.container}
+      style={{ backgroundColor: "#C5E0DC", padding: 0 }}
+    >
+      <Head>
+        <title>Edición - Tablero {idTablero}</title>
+        <meta name="description" content="Tablero colaborativo" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+
+      <AppBar
+        position="static"
+        style={{
+          backgroundColor: "#FFF",
+          color: "black",
+          paddingLeft: "100px",
+          boxShadow: "0px 0px 0px 0px",
+        }}
       >
-        <Head>
-          <title>Edición - Tablero {idTablero}</title>
-          <meta name="description" content="Tablero colaborativo" />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
+        <Toolbar>
+          <Button
+            edge="start"
+            variant="text"
+            color="primary"
+            onClick={handleReturn}
+          >
+            {/* <IconButton color="primary" aria-label="return" component="span"> */}
+            <ArrowBackIcon fontSize="large" style={{ color: { color1 } }} />
+            {/* </IconButton> */}
+          </Button>
+          <Box style={{ paddingLeft: "5%" }}>
+            <Typography variant="h4">Tablero {idTablero}</Typography>
+          </Box>
+          <Box
+            edge="end"
+            style={{
+              marginTop: "1em",
+              marginLeft: "auto",
+              paddingRight: "5%",
+            }}
+          >
+            <Image
+              width={260}
+              height={60}
+              alt="logoThinkDesign"
+              src={"/img/ThinkDesign pequeño.png"}
+            />
+          </Box>
+        </Toolbar>
+      </AppBar>
 
-        <AppBar
-          position="static"
+      <Grid justifyContent="center" container item xs={12}>
+        <Grid
+          container
           style={{
+            marginTop: "2%",
             backgroundColor: "#FFF",
-            color: "black",
-            paddingLeft: "100px",
-            boxShadow: "0px 0px 0px 0px",
+            borderRadius: 20,
           }}
+          justifyContent="space-around"
+          item
+          xs={7}
         >
-          <Toolbar>
-            <Button
-              edge="start"
-              variant="text"
-              color="primary"
-              onClick={handleReturn}
-            >
-              <IconButton color="primary" aria-label="return" component="span">
-                <ArrowBackIcon fontSize="large" style={{ color: {color1} }} />
-              </IconButton>
+          <div>
+            <Button onClick={handleZoomIn}>
+              <ZoomInIcon fontSize="large" style={{ color: { color1 } }} />
             </Button>
-            <Box style={{ paddingLeft: "5%" }}>
-              <Typography variant="h4">Tablero {idTablero}</Typography>
-            </Box>
-            <Box edge="end" style={{ marginLeft: "auto", paddingRight: "5%" }}>
-              {/* <Image
-                width={width * 0.2}
-                height={height * 0.07}
-                alt="logoThinkDesign"
-                src={"/img/ThinkDesign pequeño.png"}
-              /> */}
-            </Box>
-          </Toolbar>
-        </AppBar>
+            <Button onClick={handleZoomOut}>
+              <ZoomOutIcon fontSize="large" style={{ color: { color1 } }} />
+            </Button>
+          </div>
+          <div>
+            <Button onClick={handleLeft}>
+              <ArrowLeftIcon fontSize="large" style={{ color: { color1 } }} />
+            </Button>
+            <Button>
+              <DescriptionIcon
+                fontSize="large"
+                style={{
+                  color: { color1 },
+                }}
+              />
+            </Button>
+            <Button onClick={handleRight}>
+              <ArrowRightIcon fontSize="large" style={{ color: { color1 } }} />
+            </Button>
+          </div>
 
-        <Grid justifyContent="center" container item xs={12}>
+          <Button onClick={saveImage}>
+            <ShareIcon fontSize="large" style={{ color: { color1 } }} />
+          </Button>
+        </Grid>
+
+        <Grid
+          style={{
+            display: "flex",
+            marginTop: "2%",
+            maxHeight: "100%",
+            justifyContent: "center",
+          }}
+          item
+          xs={12}
+        >
+          <canvas
+            id="canvasBase"
+            width={width}
+            height={height}
+            style={{ backgroundColor: "#FFF" }}
+            onMouseDown={startDrawing}
+            onMouseUp={stopDrawing}
+            onMouseOut={stopDrawing}
+            onMouseMove={drawLine}
+          />
+        </Grid>
+
+        <Grid
+          style={{
+            marginTop: "2%",
+            backgroundColor: "#FFF",
+            borderRadius: 20,
+          }}
+          item
+          xs={7}
+          justifyContent="center"
+        >
           <Grid
             container
-            style={{
-              marginTop: "2%",
-              backgroundColor: "#FFF",
-              borderRadius: 20,
-            }}
+            style={{ margin: "1%" }}
             justifyContent="space-around"
-            item
-            xs={7}
-          >
-            <div>
-              <Button onClick={handleZoomIn}>
-                <ZoomInIcon fontSize="large" style={{ color: {color1} }} />
-              </Button>
-              <Button onClick={handleZoomOut}>
-                <ZoomOutIcon fontSize="large" style={{ color: {color1} }} />
-              </Button>
-            </div>
-            <div>
-              <Button onClick={handleLeft}>
-                <ArrowLeftIcon fontSize="large" style={{ color: {color1} }} />
-              </Button>
-              <Button>
-                <DescriptionIcon
-                  fontSize="large"
-                  style={{
-                    color: {color1},
-                  }}
-                />
-              </Button>
-              <Button onClick={handleRight}>
-                <ArrowRightIcon fontSize="large" style={{ color: {color1} }} />
-              </Button>
-            </div>
-            
-            <Button onClick={saveImage}>
-              <ShareIcon fontSize="large" style={{ color: {color1} }} />
-            </Button>
-          </Grid>
-
-          <Grid
-            style={{
-              display: "flex",
-              marginTop: "2%",
-              maxHeight: "100%",
-              justifyContent: "center",
-            }}
             item
             xs={12}
           >
-            <canvas
-              id="canvasBase"
-              width={width}
-              height={height}
-              style={{ backgroundColor: "#FFF" }}
-              onMouseDown={startDrawing}
-              onMouseUp={stopDrawing}
-              onMouseOut={stopDrawing}
-              onMouseMove={drawLine}
-            />
-          </Grid>
-
-          <Grid
-            style={{
-              marginTop: "2%",
-              backgroundColor: "#FFF",
-              borderRadius: 20,
-            }}
-            item
-            xs={7}
-            justifyContent="center"
-          >
-            <Grid
-              container
-              style={{ margin: "1%" }}
-              justifyContent="space-around"
-              item
-              xs={12}
+            <Button
+              variant={mode == "undo" ? "contained" : "outlined"}
+              size="small"
+              style={
+                mode == "draw"
+                  ? { borderRadius: 25, backgroundColor: { color1 } }
+                  : { borderRadius: 25, backgroundColor: { color2 } }
+              }
+              onClick={() => setMode("undo")}
             >
-              <Button
-                variant={mode == "undo" ? "contained" : "outlined"}
-                size="small"
+              <UndoIcon fontSize="large" style={{ color: { color1 } }} />
+            </Button>
+
+            <Button
+              variant={mode == "redo" ? "contained" : "outlined"}
+              size="small"
+              style={
+                mode == "draw"
+                  ? { borderRadius: 25, backgroundColor: { color1 } }
+                  : { borderRadius: 25, backgroundColor: { color2 } }
+              }
+              onClick={() => setMode("redo")}
+            >
+              <RedoIcon fontSize="large" style={{ color: { color1 } }} />
+            </Button>
+
+            <Button
+              variant="contained"
+              size="small"
+              style={{ borderRadius: 25, backgroundColor: { color2 } }}
+              onClick={() => setMode("pan")}
+            >
+              <PanToolIcon fontSize="large" style={{ color: { color1 } }} />
+            </Button>
+            <Button
+              variant={mode == "mouse" ? "contained" : "outlined"}
+              size="small"
+              style={
+                mode == "draw"
+                  ? { borderRadius: 25, backgroundColor: { color1 } }
+                  : { borderRadius: 25, backgroundColor: { color2 } }
+              }
+              onClick={() => setMode("mouse")}
+            >
+              <MouseIcon fontSize="large" style={{ color: { color1 } }} />
+            </Button>
+
+            <Button
+              variant={mode == "backspace" ? "contained" : "outlined"}
+              size="small"
+              style={
+                mode == "draw"
+                  ? { borderRadius: 25, backgroundColor: { color1 } }
+                  : { borderRadius: 25, backgroundColor: { color2 } }
+              }
+              onClick={() => setMode("backspace")}
+            >
+              <BackSpaceIcon
+                fontSize={false ? "large" : "small"}
+                style={{ color: { color1 } }}
+              />
+            </Button>
+
+            <Button
+              variant={mode == "draw" ? "contained" : "outlined"}
+              size="small"
+              style={
+                mode == "draw"
+                  ? { borderRadius: 25, backgroundColor: { color1 } }
+                  : { borderRadius: 25, backgroundColor: { color2 } }
+              }
+              onClick={handleEdit}
+            >
+              <CreateIcon
+                fontSize={mode == "draw" ? "small" : "large"}
                 style={
-                  mode == "draw" 
-                    ?  { borderRadius: 25, backgroundColor: {color1} }
-                    : { borderRadius: 25, backgroundColor: {color2} }
+                  mode == "draw" ? { color: { color2 } } : { color: { color1 } }
                 }
-                onClick={() => setMode("undo")}
-              >
-                <UndoIcon fontSize="large" style={{ color: {color1} }} />
-              </Button>
-
-              <Button
-               variant={mode == "redo" ? "contained" : "outlined"}
-               size="small"
-               style={
-                 mode == "draw" 
-                   ?  { borderRadius: 25, backgroundColor: {color1} }
-                   : { borderRadius: 25, backgroundColor: {color2} }
-               }
-                onClick={() => setMode("redo")}
-              >
-                <RedoIcon fontSize="large" style={{ color: {color1} }} />
-              </Button>
-
-              <Button
-                variant="contained"
-                size="small"
-                style={{ borderRadius: 25, backgroundColor: {color2} }}
-                onClick={() => setMode("pan")}
-              >
-                <PanToolIcon fontSize="large" style={{ color: {color1} }} />
-              </Button>
-              <Button
-                 variant={mode == "mouse" ? "contained" : "outlined"}
-                 size="small"
-                 style={
-                   mode == "draw" 
-                     ?  { borderRadius: 25, backgroundColor: {color1} }
-                     : { borderRadius: 25, backgroundColor: {color2} }
-                 }
-                onClick={() => setMode("mouse")}
-              >
-                <MouseIcon fontSize="large" style={{ color: {color1} }} />
-              </Button>
-
-              <Button
-            variant={mode == "backspace" ? "contained" : "outlined"}
-            size="small"
-            style={
-              mode == "draw" 
-                ?  { borderRadius: 25, backgroundColor: {color1} }
-                : { borderRadius: 25, backgroundColor: {color2} }
-            }
-                onClick={() => setMode("backspace")}
-              >
-                <BackSpaceIcon
-                  fontSize={false ? "large" : "small"}
-                  style={{ color: {color1} }}
-                />
-              </Button>
-
-              <Button
-                variant={mode == "draw" ? "contained" : "outlined"}
-                size="small"
-                style={
-                  mode == "draw" 
-                    ?  { borderRadius: 25, backgroundColor: {color1} }
-                    : { borderRadius: 25, backgroundColor: {color2} }
-                }
-                onClick={handleEdit}
-              >
-                <CreateIcon
-                  fontSize={mode == "draw"  ? "small" : "large"}
-                  style={
-                    mode == "draw"  ? { color: {color2} } :{ color: {color1} } 
-                  }
-                />
-              </Button>
-            </Grid>
+              />
+            </Button>
           </Grid>
         </Grid>
+      </Grid>
 
-        <footer className={styles.footer}>
-          <h3>
-            CollabNotes
-            <i> by </i>
-            ThinkDesign
-          </h3>
-        </footer>
-      </div>
+      <footer className={styles.footer}>
+        <h3>
+          CollabNotes
+          <i> by </i>
+          ThinkDesign
+        </h3>
+      </footer>
       <Script src="/js/tablero.js" strategy="lazyOnload " />
+    </div>
   );
 }
