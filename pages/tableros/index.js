@@ -19,6 +19,14 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 import styles from "../../styles/Home.module.css";
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import React from "react";
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import DialogContentText from '@material-ui/core/DialogContentText';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Typography from "@material-ui/core/Typography";
 
 const BootstrapInput = withStyles((theme) => ({
   root: {
@@ -56,6 +64,23 @@ const BootstrapInput = withStyles((theme) => ({
 }))(InputBase);
 
 export default function Tablero() {
+  const [open, setOpen] = React.useState(false);
+
+  const handleCloseDessagree = () => {
+    setOpen(false);
+  };
+
+  const handleCloseAgree = () => {
+    router.push({
+      pathname: `/`,
+    });
+  };
+  
+  const handleEndSession = (board) => {
+    setOpen(true);
+  };
+
+  const color1 = "#774F38";
   const router = useRouter();
   const [boards, setBoards] = useState([]);
   const [newBoardName, setNewBoardName] = useState([]);
@@ -96,11 +121,11 @@ export default function Tablero() {
             edge="start"
             variant="text"
             color="primary"
-            // onClick={handleReturn}
+            onClick={handleEndSession}
           >
-            {/* <IconButton color="primary" aria-label="return" component="span">
-              <ArrowBackIcon fontSize="large" style={{ color: { color1 } }} />
-            </IconButton> */}
+              <IconButton color="primary" aria-label="return" component="span">
+              <ExitToAppIcon fontSize="large" style={{ color: { color1 } }} />
+            </IconButton>
           </Button>
 
           <Box
@@ -184,6 +209,41 @@ export default function Tablero() {
           ThinkDesign
         </h3>
       </footer>
+
+      <Dialog
+        open={open}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogTitle id="alert-dialog-title">
+        <Typography variant="h3" align="center" style={{ color:"#774F38", marginBottom:0 }}>
+          ¡¡ATENCIÓN!!
+        </Typography>
+          <h2 ></h2>
+        </DialogTitle>
+        <DialogContent>
+          <DialogContentText id="alert-dialog-description">
+          <Typography variant="h4" align="center">
+          Esta apunto de cerrar la sesión
+          </Typography>
+          <Typography variant="h4"  align="center">
+            ¿Desea continuar?
+          </Typography>
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions style={{ justifyContent: "center", padding:30 }}>
+          <Button 
+            variant="contained"
+            color="secondary" 
+            onClick={handleCloseDessagree}>Cancelar</Button>
+          <Button
+            variant="contained"
+            color="primary" 
+             onClick={handleCloseAgree} autoFocus>
+            Continuar
+          </Button>
+        </DialogActions>
+      </Dialog>
     </DashboardStyle>
   );
 }

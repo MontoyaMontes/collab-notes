@@ -115,9 +115,7 @@ export default function Home() {
         </Grid>
         <Grid justifyContent="center" container item xs={6}>
           <main className={styles.main} style={{paddingTop: "0"}}>
-          <h5 className={styles.title}>Registrate </h5>
-          <h3 className={styles.title}> o </h3>
-          <h3 className={styles.title}>inicia sesión</h3>
+          <h3 className={styles.title}>Iniciar sesión</h3>
 
           <div className={styles.data}>
             {incorrectUser && <label style={{color:"red"}}>Usuario o contraseña incorrectas</label>}
